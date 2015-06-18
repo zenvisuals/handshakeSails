@@ -1,0 +1,24 @@
+<style>
+  body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #eee;
+  }
+</style>
+<% if (errors) {%>
+  <% errors.forEach(function (error) { %>
+    <%= __(error) %>
+  <% }) %>
+<% } %>
+<div class="container">
+  <form role="form" action="/auth/local/register" method="post" class="form-signin">
+    <h2 class="form-signin-heading">Join Us!</h2>
+    <label class="sr-only" for="inputUsername">Username</label>
+    <input class="form-control" id="inputUsername" type="text" name="username" placeholder="Username">
+    <label class="sr-only" for="inputEmail">Email</label>
+    <input class="form-control" id="inputEmail" type="text" name="email" placeholder="Email">
+    <label class="sr-only" for="inputPassword">Password</label>
+    <input class="form-control" id="inputPassword" type="password" name="password" placeholder="Password">
+    <button class="btn btn-primary btn-lg btn-block" type="submit">Sign up</button>
+  </form>
+</div>

@@ -1,0 +1,119 @@
+<div class="container">
+  <h1>Handshakes</h1>
+  <ul class="nav nav-tabs nav-justified" role="tablist">
+    <li role="presentation" class="active"><a href="#received" aria-controls="received" role="tab" data-toggle="tab">Received</a></li>
+    <li role="presentation"><a href="#pending" aria-controls="pending" role="tab" data-toggle="tab">Pending</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="flashMessages">
+    </div>
+  <% if(receivers.length) { %>
+    <div role="tabpanel" class="tab-pane row" id="pending">
+    <% receivers.forEach(function(receiver) { %>
+      <div class="col-xs-6 col-sm-3">
+      <div class="well well-lg textcenter">
+        <img class="img-responsive marginauto img-circle" src="http://lorempixel.com/200/200/abstract" alt="">
+        <div class="caption">
+          <h4><%= receiver.name %></h4>
+          <p><%= receiver.designation %></p>
+          <p><%= receiver.industry %></p>
+          <p>
+            <button type="button" class="btn btn-danger btn-sm btn-block" id="removeBtn" data-userid="<%= receiver.user %>">
+              Remove
+            </button>
+            </p>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+  <% } else { %>
+    <div role="tabpanel" class="tab-pane alert alert-info" id="pending">
+      You have not sent out any handshake requests.
+    </div>
+    <% } %>
+
+    <% if(initiators.length) { %>
+      <div role="tabpanel" class="tab-pane active row" id="received">
+        <% initiators.forEach(function(initiator) { %>
+          <div class="col-xs-6 col-sm-3">
+          <div class="well well-lg textcenter">
+            <img class="img-responsive marginauto img-circle" src="http://lorempixel.com/200/200/abstract" alt="">
+            <div class="caption">
+              <h4><%= initiator.name %></h4>
+              <p><%= initiator.designation %></p>
+              <p><%= initiator.industry %></p>
+              <p><button type="button" class="btn btn-success btn-sm btn-block">Accept</button></p>
+              <p><button type="button" class="btn btn-danger btn-sm btn-block" id="rejectBtn" data-userid="<%= initiator.user %>">
+                  Reject
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+    </div>
+    <% } else { %>
+      <div role="tabpanel" class="tab-pane active alert alert-info" id="received">
+        You currently do not have any handshakes received.
+      </div>
+    <% } %>
+
+  </div>
+</div>
+<script>
+var currentUser = parseInt("<%= userId %>");
+//removing handshakes
+$('button#removeBtn').click(function(){
+  var obj = $(this);
+  clearHandshake(obj, true);
+});
+
+$('button#rejectBtn').click(function(){
+  var obj = $(this);
+  clearHandshake(obj, false);
+})
+
+function clearHandshake(obj, removal) {
+  var btn = obj;
+  var btnText = btn.text();
+  var btnLoadText = removal ? 'Removing...' : 'Rejecting...';
+  var receiverId = removal ? btn.data('userid') : currentUser;
+  var initiatorId = removal ? currentUser : btn.data('userid');
+  var userName = btn.parent().siblings('h4').text();
+
+  disableButton(btn, btnLoadText);
+  $.ajax({
+    url: '../handshake',
+    method: 'delete',
+    data: {
+      receiver: receiverId,
+      initiator: initiatorId,
+    }
+  }).done(function(data){
+    btn.parents('.col-xs-6.col-sm-3').fadeOut();
+    addFlashMsg("You have removed <strong>" + userName + "</strong> from the list.", "success")
+  }).fail(function(err){
+    enableButton(btn, btnText);
+    addFlashMsg(err, "danger")
+  })
+}
+var flashDivTpl = '<div class="alert marginauto"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><p></p></div>';
+
+function addFlashMsg(text, status) {
+  var flashDiv = $(flashDivTpl);
+  flashDiv.addClass("alert-" + status);
+  flashDiv.children('p').html(text);
+  flashDiv.prependTo($('div#flashMessages'));
+  flashDiv.delay(3000).fadeOut(500, function(){
+    $(this).remove();
+  });
+}
+
+function disableButton(btn, loadText) {
+  btn.addClass('disabled').text(loadText).button('refresh');
+}
+function enableButton(btn, originalText) {
+  btn.removeClass('disabled').text(originalText).button('refresh');
+}
+</script>

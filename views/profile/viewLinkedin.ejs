@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row">
+    <img src="<%= profile.pictureUrl %>" class="img-rounded">
+    <h1><%= profile.formattedName %></h1>
+    <p class="lead"><%= profile.summary %></p>
+    <div class="panel panel-info">
+      <div class="panel-heading">Designation</div>
+      <div class="panel-body"><%= profile.headline %></div>
+    </div>
+    <div class="panel panel-info">
+      <div class="panel-heading">Industry</div>
+      <div class="panel-body"><%= profile.industry %></div>
+    </div>
+    <div class="panel panel-info">
+      <div class="panel-heading">Connections</div>
+      <div class="panel-body"><%= profile.numConnections %></div>
+    </div>
+  </div>
+</div>
