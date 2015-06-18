@@ -66,31 +66,5 @@ module.exports = {
       return cb(err);
     })
 
-    // User.findOne({id:thisId}).populate('handshakes').then(function(thisUser) {
-    //   var handshakes = _.pluck(thisUser.handshakes, 'id');
-    //   return Handshake.find({id:handshakes}).populate('users');
-    //
-    // }).then(function(existingHandshakes){
-    //   var existingIds = _.chain(existingHandshakes)
-    //   .map(function(eachHandshake){
-    //     return _.pluck(eachHandshake.users, 'id');
-    //   }).flatten().uniq().value();
-    //
-    //   var handshakeData = _.chain(userIds)
-    //   .difference(existingIds)
-    //   .map(function(eachId) {
-    //     return {
-    //       initiator: thisId,
-    //       state: 'pending',
-    //       users: [thisId, eachId]
-    //     };
-    //   }).value();
-    //
-    //   return Handshake.create(handshakeData)
-    // }).then(function(newHandshakes){
-    //   return cb(null, newHandshakes);
-    // }).catch(function(err){
-    //   return cb(err);
-    // })
   }
 };
