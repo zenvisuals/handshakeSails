@@ -43,7 +43,7 @@
               <h4><%= initiator.name %></h4>
               <p><%= initiator.designation %></p>
               <p><%= initiator.industry %></p>
-              <p><button type="button" class="btn btn-success btn-sm btn-block">Accept</button></p>
+              <p><button type="button" class="btn btn-success btn-sm btn-block" id="acceptBtn" data-userid="<%= initiator.user %>">Accept</button></p>
               <p><button type="button" class="btn btn-danger btn-sm btn-block" id="rejectBtn" data-userid="<%= initiator.user %>">
                   Reject
                 </button>
@@ -72,7 +72,44 @@ $('button#removeBtn').click(function(){
 $('button#rejectBtn').click(function(){
   var obj = $(this);
   clearHandshake(obj, false);
+});
+
+$('button#acceptBtn').click(function(){
+  var obj = $(this);
+  acceptHandshake(obj);
 })
+
+function acceptHandshake(obj) {
+  var btn = obj;
+  var btnText = btn.text();
+  var btnLoadText = 'Accepting...';
+  var receiverId = currentUser;
+  var initiatorId = btn.data('userid');
+  var userName = btn.parent().siblings('h4').text();
+
+  disableButton(btn, btnLoadText);
+  $.ajax({
+    url: '../handshake/accept',
+    method: 'post',
+    data: {
+      receiver: receiverId,
+      initiator: initiatorId,
+    }
+  }).done(function(data){
+    removeListItem(btn);
+    addFlashMsg('You have accepted <strong>' + userName + '</strong> from the list.', 'success');
+  }).fail(function(err){
+    var responseObj = JSON.parse(err.responseText);
+    enableButton(btn, btnText);
+    addFlashMsg(responseObj.summary, "danger");
+  })
+}
+
+function removeListItem(obj) {
+  obj.parents('.col-xs-6.col-sm-3').fadeOut(500, function() {
+    $(this).remove();
+  })
+}
 
 function clearHandshake(obj, removal) {
   var btn = obj;
@@ -91,11 +128,12 @@ function clearHandshake(obj, removal) {
       initiator: initiatorId,
     }
   }).done(function(data){
-    btn.parents('.col-xs-6.col-sm-3').fadeOut();
+    removeListItem(btn);
     addFlashMsg("You have removed <strong>" + userName + "</strong> from the list.", "success")
   }).fail(function(err){
+    var responseObj = JSON.parse(err.responseText);
     enableButton(btn, btnText);
-    addFlashMsg(err, "danger")
+    addFlashMsg(responseObj.summary, "danger")
   })
 }
 var flashDivTpl = '<div class="alert marginauto"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><p></p></div>';
