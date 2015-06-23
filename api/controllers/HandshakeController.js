@@ -31,10 +31,26 @@ module.exports = {
 		return res.redirect('/');
 	},
 	destroy: function(req, res) {
-		connectionModel.destroy(Handshake, req, res);
+		connectionModel.destroy(Handshake, req, res)
+		.then(function(destroyedConnection){
+			return res.send(200);
+		}).catch(function(e){
+			return res.serverError(e);
+		});
 	},
 	acceptHandshake: function(req, res) {
-		console.log(req.body);
-		res.ok();
+		connectionModel.destroy(Handshake, req, res)
+		.then(function(destroyedConnection){
+			console.log(destroyedConnection[0]);
+			console.log(destroyedConnection[0].initiator);
+			console.log(destroyedConnection[0].receiver);
+			Contact.initiate(destroyedConnection[0].initiator, [destroyedConnection[0].receiver], function(err, savedContact){
+				if(err) return res.serverError(err);
+				return res.send(200);
+			});
+		}).catch(function(e){
+			//should put rollback function here
+			return res.serverError(e);
+		});
 	}
 };

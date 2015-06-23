@@ -67,13 +67,9 @@ module.exports = {
 
 		if(isNaN(receiver) || isNaN(initiator)) return res.badRequest();
 
-		model.destroy({
+		return model.destroy({
 			receiver: receiver,
 			initiator: initiator
-		}).then(function(destroyedConnection){
-			return res.send(200);
-		}).catch(function(e){
-			return res.serverError(e);
 		});
   },
   gatherProfiles: function(model, req, res) {
