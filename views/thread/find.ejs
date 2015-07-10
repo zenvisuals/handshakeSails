@@ -1,3 +1,9 @@
+<style>
+div#message {
+  max-height: 480px;
+  overflow-y: scroll;
+}
+</style>
 <div class="container">
   <% if(receiver) { %>
   <h1><%= receiver.name %> </h1>
@@ -6,7 +12,7 @@
     </div>
 
     <% if(messages.length) { %>
-      <div class="row" id="contact">
+      <div class="row" id="message">
         <% messages.forEach(function(message) { %>
           <% if(message.sendingUser == receiver.user) { %>
             <div class="panel panel-default"><div class="panel-heading">
@@ -21,12 +27,15 @@
                <% } %>
              </div>
           <% } %>
-          <div class="panel-body"><p><%= message.content %></p></div>
+          <div class="panel-body">
+            <p><%= message.content %></p>
+            <p class="text-right"><small><em>Sent on <%= message.createdAt %></em></small></p>
+          </div>
         </div>
         <% }) %>
     </div>
     <% } else { %>
-      <div class="alert alert-info" id="contact">
+      <div class="alert alert-info" id="message">
         You currently do not have any messages.
       </div>
     <% } %>
@@ -49,6 +58,17 @@
 </div>
 
 <script>
+var messageDiv;
+$(document).ready(function(){
+  messageDiv = $('div#message');
+  messageDiv.scrollTop(messageDiv[0].scrollHeight);
+})
+
+var currentUserName = "You";
+<% if(user) { %>
+currentUserName = "<%= user.name %>";
+<% } %>
+
 $('button#messageBtn').click(function(){
   var form = $('form#messageForm');
   var formData = form.serializeArray();
@@ -64,12 +84,25 @@ $('button#messageBtn').click(function(){
     }
   }).done(function(data){
     enableForm();
+    $(newMessageTpl(formData[0].value)).hide().appendTo(messageDiv).fadeIn(1000);
+    messageDiv.scrollTop(messageDiv[0].scrollHeight);
+    //$('div#message').append(newMessageTpl(formData[0].value));
   }).fail(function(err){
     var responseObj = JSON.parse(err.responseText);
     enableForm();
     addFlashMsg(responseObj.summary, "danger")
   })
 })
+function newMessageTpl(message) {
+  var template = '<div class="panel panel-info"><div class="panel-heading">';
+  template += currentUserName + '</div>';
+  template += '<div class="panel-body">';
+  template += '<p>' + message + '</p>';
+  template += '<p class="text-right"><small><em>Sent on ' + new Date() + '</em></small></p>';
+  template += '</div></div>';
+  return template;
+}
+
 function disableForm() {
   $('form#messageForm fieldset').prop('disabled', true);
 }
