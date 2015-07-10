@@ -1,4 +1,3 @@
-var _ = require("underscore");
 var connectionModel = require('../services/inherits/connectionModel');
 /**
  * HandshakeController
@@ -41,9 +40,6 @@ module.exports = {
 	acceptHandshake: function(req, res) {
 		connectionModel.destroy(Handshake, req, res)
 		.then(function(destroyedConnection){
-			console.log(destroyedConnection[0]);
-			console.log(destroyedConnection[0].initiator);
-			console.log(destroyedConnection[0].receiver);
 			Contact.initiate(destroyedConnection[0].initiator, [destroyedConnection[0].receiver], function(err, savedContact){
 				if(err) return res.serverError(err);
 				return res.send(200);

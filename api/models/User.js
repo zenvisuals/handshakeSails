@@ -28,7 +28,13 @@ module.exports = {
       collection: 'Passport',
       via: 'user'
     },
-
+    threads: {
+      type: 'array'
+    },
+    messages: {
+      collection: 'Message',
+      via: 'sendingUser'
+    }
   },
 
   beforeCreate: function(values, cb) {

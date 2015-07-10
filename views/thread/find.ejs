@@ -1,0 +1,89 @@
+<div class="container">
+  <% if(receiver) { %>
+  <h1><%= receiver.name %> </h1>
+  <% } %>
+    <div id="flashMessages">
+    </div>
+
+    <% if(messages.length) { %>
+      <div class="row" id="contact">
+        <% messages.forEach(function(message) { %>
+          <% if(message.sendingUser == receiver.user) { %>
+            <div class="panel panel-default"><div class="panel-heading">
+              <% if(receiver) { %>
+                <%= receiver.name %>
+              <% } %>
+              </div>
+          <% } else { %>
+             <div class="panel panel-info"><div class="panel-heading">
+               <% if(user) { %>
+                 <%= user.name %>
+               <% } %>
+             </div>
+          <% } %>
+          <div class="panel-body"><p><%= message.content %></p></div>
+        </div>
+        <% }) %>
+    </div>
+    <% } else { %>
+      <div class="alert alert-info" id="contact">
+        You currently do not have any messages.
+      </div>
+    <% } %>
+    <form id="messageForm">
+      <fieldset>
+        <div class="form-group">
+          <label for="messageInput">Message:</label>
+          <textarea class="form-control" rows="8" name="message"></textarea>
+          <% if(user) { %>
+            <input type="hidden" name="user" value="<%= user.user %>">
+          <% } %>
+          <% if(receiver) { %>
+            <input type="hidden" name="receiver" value="<%= receiver.user %>"
+          <% } %>
+        </div>
+          <button type="button" class="btn btn-primary" id="messageBtn">Send Message</button>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<script>
+$('button#messageBtn').click(function(){
+  var form = $('form#messageForm');
+  var formData = form.serializeArray();
+  if(!formData[0].value) alert("Please type something");
+  disableForm();
+  $.ajax({
+    url: './',
+    method: 'post',
+    data: {
+      id1: formData[1].value,
+      id2: formData[2].value,
+      message: formData[0].value
+    }
+  }).done(function(data){
+    enableForm();
+  }).fail(function(err){
+    var responseObj = JSON.parse(err.responseText);
+    enableForm();
+    addFlashMsg(responseObj.summary, "danger")
+  })
+})
+function disableForm() {
+  $('form#messageForm fieldset').prop('disabled', true);
+}
+function enableForm() {
+  $('form#messageForm fieldset').prop('disabled', false);
+}
+var flashDivTpl = '<div class="alert marginauto"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><p></p></div>';
+function addFlashMsg(text, status) {
+  var flashDiv = $(flashDivTpl);
+  flashDiv.addClass("alert-" + status);
+  flashDiv.children('p').html(text);
+  flashDiv.prependTo($('div#flashMessages'));
+  flashDiv.delay(3000).fadeOut(500, function(){
+    $(this).remove();
+  });
+}
+</script>

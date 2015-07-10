@@ -1,0 +1,28 @@
+<div class="container">
+  <h1>Contacts</h1>
+    <div id="flashMessages">
+    </div>
+
+    <% if(profiles.length) { %>
+      <div class="row" id="contact">
+        <% profiles.forEach(function(profile) { %>
+          <div class="col-xs-6 col-sm-3">
+          <div class="well well-lg textcenter">
+            <img class="img-responsive marginauto img-circle" src="http://lorempixel.com/200/200/abstract" alt="">
+            <div class="caption">
+              <h4><%= profile.name %></h4>
+              <p><%= profile.designation %></p>
+              <p><%= profile.industry %></p>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+    </div>
+    <% } else { %>
+      <div class="alert alert-info" id="contact">
+        You currently do not have any contacts.
+      </div>
+    <% } %>
+
+  </div>
+</div>
