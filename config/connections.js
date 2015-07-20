@@ -82,7 +82,7 @@ module.exports.connections = {
     // password: 'handshake',
     // database: 'handshakeSails',
     // port: 5432,
-    url: process.env.DATABASE_URL
+    url: process.env.DATABASE_URL,
     schema: true
   }
 
