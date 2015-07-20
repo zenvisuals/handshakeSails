@@ -20,7 +20,6 @@ exports.register = function(req, res, next) {
     req.flash('error', 'Error.Passport.Password.Missing');
     return next(new Error('No password was entered.'));
   }
-
   User.create({
     username: username,
     email: email

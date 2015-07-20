@@ -1,6 +1,8 @@
 var path     = require('path')
   , url      = require('url')
-  , passport = require('passport');
+  , passport = require('passport')
+  , linkedin = require('./linkedin/api')
+  , request  = require('request');
 
 /**
  * Passport Service
@@ -130,8 +132,26 @@ passport.connect = function (req, query, profile, next) {
               console.log(1, err);
               return next(err);
             }
-
-            next(err, user);
+            //Generate new profile with the linked account
+            request.get({url:linkedin.basicProfile + passport.tokens.accessToken,json:true}, function(e, r, data) {
+      				if(e) return next(e);
+      				if(r.statusCode >= 300) return next("Something went wrong");
+      				// Profile.create({
+              //
+              // })
+              var profileData = {
+                user: user.id,
+                name: data.formattedName,
+                designation: data.headline,
+                industry: data.industry,
+                description: data.summary
+              };
+              if(data.pictureUrls._total) profileData.pictureUrl = data.pictureUrls.values[0];
+              Profile.create(profileData).exec(function(err, profile) {
+                if(err) return next(err);
+                next(err, user);
+              })
+      			})
           });
         });
       }

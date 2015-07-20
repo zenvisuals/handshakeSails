@@ -12,7 +12,11 @@
     <% receivers.forEach(function(receiver) { %>
       <div class="col-xs-6 col-sm-3">
       <div class="well well-lg textcenter">
-        <img class="img-responsive marginauto img-circle" src="http://lorempixel.com/200/200/abstract" alt="">
+        <% if(receiver.pictureUrl) { %>
+          <img class="img-responsive marginauto img-circle" src="<%= receiver.pictureUrl %>" alt="">
+        <% } else { %>
+          <img class="img-responsive marginauto img-circle" src="http://lorempixel.com/200/200/abstract" alt="">
+        <% } %>
         <div class="caption">
           <h4><%= receiver.name %></h4>
           <p><%= receiver.designation %></p>
@@ -38,7 +42,11 @@
         <% initiators.forEach(function(initiator) { %>
           <div class="col-xs-6 col-sm-3">
           <div class="well well-lg textcenter">
-            <img class="img-responsive marginauto img-circle" src="http://lorempixel.com/200/200/abstract" alt="">
+            <% if(initiator.pictureUrl) { %>
+              <img class="img-responsive marginauto img-circle" src="<%= initiator.pictureUrl %>" alt="">
+            <% } else { %>
+              <img class="img-responsive marginauto img-circle" src="http://lorempixel.com/200/200/abstract" alt="">
+            <% } %>
             <div class="caption">
               <h4><%= initiator.name %></h4>
               <p><%= initiator.designation %></p>

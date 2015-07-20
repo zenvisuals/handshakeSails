@@ -43,7 +43,7 @@ div#message {
       <fieldset>
         <div class="form-group">
           <label for="messageInput">Message:</label>
-          <textarea class="form-control" rows="8" name="message"></textarea>
+          <textarea class="form-control" rows="8" name="message" id="messageTextArea"></textarea>
           <% if(user) { %>
             <input type="hidden" name="user" value="<%= user.user %>">
           <% } %>
@@ -86,7 +86,7 @@ $('button#messageBtn').click(function(){
     enableForm();
     $(newMessageTpl(formData[0].value)).hide().appendTo(messageDiv).fadeIn(1000);
     messageDiv.scrollTop(messageDiv[0].scrollHeight);
-    //$('div#message').append(newMessageTpl(formData[0].value));
+    $('#messageTextArea').val('');
   }).fail(function(err){
     var responseObj = JSON.parse(err.responseText);
     enableForm();

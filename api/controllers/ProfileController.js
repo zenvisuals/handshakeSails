@@ -1,4 +1,4 @@
-var linkedin = require('./linkedin/api');
+var linkedin = require('../services/linkedin/api');
 var request = require('request');
 /**
  * ProfileController
