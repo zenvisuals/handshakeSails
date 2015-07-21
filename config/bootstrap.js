@@ -73,5 +73,6 @@ module.exports.bootstrap = function(cb) {
     });
   })
   console.log('Hosting on: ' + sails.getBaseurl());
+
   cb();
 };
