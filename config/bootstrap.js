@@ -31,8 +31,17 @@ module.exports.bootstrap = function(cb) {
     {name: "Ang", designation: "CEO", industry: "Startup", user: 5},
   ];
 
+  var passports = [
+    {protocol: 'local', password: 'pass1234', user: 1},
+    {protocol: 'local', password: 'pass1234', user: 2},
+    {protocol: 'local', password: 'pass1234', user: 3},
+    {protocol: 'local', password: 'pass1234', user: 4},
+    {protocol: 'local', password: 'pass1234', user: 5},
+  ]
+
 
   User.create(users).then(function(newUsers){
+    Passport.create(passports).exec(function(){});
     Handshake.initiate(1, [1,2,3,4], function(err,savedUser){
       Handshake.initiate(2, [1,2,3,4], function(err, savedUser){
         Handshake.initiate(3, [1,2,3,4], function(err, savedUser){

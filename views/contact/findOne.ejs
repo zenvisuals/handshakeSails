@@ -13,6 +13,7 @@
               <h4><%= profile.name %></h4>
               <p><%= profile.designation %></p>
               <p><%= profile.industry %></p>
+              <p><a role="button" class="btn btn-success btn-sm btn-block" href="/thread/?id1=<%= req.session.passport.user %>&id2=<%= profile.user %>">Message</a></p>
             </div>
           </div>
         </div>

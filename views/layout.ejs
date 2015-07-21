@@ -56,8 +56,10 @@
         <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
         <li><a href="/contact/<%= req.session.passport.user %>">Contacts</a></li>
         <li><a href="/handshake/<%= req.session.passport.user %>">Handshake</a><li>
-        <li><a href="#">Messages</a><li>
-
+        <li><a href="/profile/<%= req.session.passport.user %>/linkedin">Profile</a><li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/logout">Logout</a></li>
       </ul>
       <% } else { %>
         <ul class="nav navbar-nav navbar-right">
