@@ -6,8 +6,13 @@
  */
 
 module.exports = {
-	create: function(req, res) {
-		console.log("body:", req.body);
-		return res.ok();
+	initiateHandshake: function(req, res) {
+		if(req.body && req.body.deviceId && req.body.tagId) {
+			var deviceId = req.body.deviceId;
+			var tagId = req.body.tagId;
+
+		} else {
+			return res.badRequest();
+		}
 	}
 };
