@@ -11,6 +11,7 @@ module.exports = {
 			var deviceId = req.body.deviceId;
 			var tagId = req.body.tagId;
 
+			console.log(1, deviceId, 2, tagId);
 		} else {
 			return res.badRequest();
 		}

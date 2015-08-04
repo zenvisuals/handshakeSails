@@ -37,7 +37,13 @@ module.exports.bootstrap = function(cb) {
     {protocol: 'local', password: 'pass1234', user: 3},
     {protocol: 'local', password: 'pass1234', user: 4},
     {protocol: 'local', password: 'pass1234', user: 5},
-  ]
+  ];
+
+  var devices = [
+    {deviceId: "54ff70066667515122581267", tagId: "1792429212", user: 2},
+    {deviceId: "54ff70066672524845491867", tagId: "2277639212", user: 3}
+  ];
+  Device.create(devices).exec(console.log);
 
 
   User.create(users).then(function(newUsers){
