@@ -34,6 +34,11 @@ module.exports = {
     messages: {
       collection: 'Message',
       via: 'sendingUser'
+    },
+
+    //Device
+    device: {
+      model: 'Device'
     }
   },
 
