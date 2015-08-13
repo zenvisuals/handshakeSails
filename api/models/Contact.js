@@ -6,6 +6,8 @@ var connectionModel = require('../services/inherits/connectionModel');
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
+var attributes = connectionModel.attributes;
+
 module.exports = {
 
   attributes: connectionModel.attributes,

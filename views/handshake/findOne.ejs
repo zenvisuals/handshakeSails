@@ -19,8 +19,9 @@
         <% } %>
         <div class="caption">
           <h4><%= receiver.name %></h4>
-          <p><%= receiver.designation %></p>
-          <p><%= receiver.industry %></p>
+          <p><strong><%= receiver.company.title %></strong></p>
+          <p><%= receiver.designation.title %></p>
+          <p><%= receiver.industry.title %></p>
           <p>
             <button type="button" class="btn btn-danger btn-sm btn-block" id="removeBtn" data-userid="<%= receiver.user %>">
               Remove

@@ -1,3 +1,4 @@
+var data = require('./bootstrapData');
 /**
  * Bootstrap
  * (sails.config.bootstrap)
@@ -15,47 +16,28 @@ module.exports.bootstrap = function(cb) {
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
   // var storeUsers = [];
   //
-  var users = [
-    {username: 'Chee', email: 'chee@zv.sg', password: 'pass1234'},
-    {username: 'Zhi', email: 'zhi@zv.sg', password: 'pass1234'},
-    {username: 'Qu', email: 'qu@zv.sg', password: 'pass1234'},
-    {username: 'Lu', email: 'lu@zv.sg', password: 'pass1234'},
-    {username: 'Ah', email: 'ah@zv.sg', password: 'pass1234'}
-  ];
 
-  var profiles = [
-    {name: "Cheese", designation: "Baker", industry: "Food and Beverage", user: 1},
-    {name: "Orange", designation: "Farmer", industry: "Food and Beverage", user: 2},
-    {name: "Apple", designation: "Picker", industry: "Food and Beverage", user: 3},
-    {name: "Pineapple", designation:"Poker", industry: "Food and Beverage", user: 4},
-    {name: "Ang", designation: "CEO", industry: "Startup", user: 5},
-  ];
-
-  var passports = [
-    {protocol: 'local', password: 'pass1234', user: 1},
-    {protocol: 'local', password: 'pass1234', user: 2},
-    {protocol: 'local', password: 'pass1234', user: 3},
-    {protocol: 'local', password: 'pass1234', user: 4},
-    {protocol: 'local', password: 'pass1234', user: 5},
-  ];
-
-  var devices = [
-    {deviceId: "54ff70066667515122581267", tagId: "1792429212", user: 2},
-    {deviceId: "54ff70066672524845491867", tagId: "2277639212", user: 3}
-  ];
-  Device.create(devices).exec(console.log);
+  Device.create(data.devices).exec(console.log);
 
 
-  User.create(users).then(function(newUsers){
-    Passport.create(passports).exec(function(){});
+  User.create(data.users).then(function(newUsers){
+    Passport.create(data.passports).exec(function(){});
     Handshake.initiate(1, [1,2,3,4], function(err,savedUser){
       Handshake.initiate(2, [1,2,3,4], function(err, savedUser){
         Handshake.initiate(3, [1,2,3,4], function(err, savedUser){
           Handshake.initiate(4, [1,2,3,4], function(){})
         })
       });
-      Profile.create(profiles).exec(function(){});
-    })
+
+    });
+    var companies = Company.create(data.companies);
+    var designations = Designation.create(data.designations);
+    var industries = Industry.create(data.industries);
+    return [companies, designations, industries];
+  }).spread(function(companies, designations, industries){
+    Profile.create(data.profiles).exec(function(){
+      Profile.find().populateAll().exec(console.log);
+    });
   })
 
   var threads = [

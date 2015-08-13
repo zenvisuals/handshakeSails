@@ -12,12 +12,6 @@ module.exports = {
       type: 'string',
       required: true
     },
-    designation: {
-      type: 'string',
-    },
-    industry: {
-      type: 'string',
-    },
     pictureUrl: {
       type: 'string',
     },
@@ -26,7 +20,16 @@ module.exports = {
     },
     user: {
       model: 'User',
-    }
+    },
+    designation: {
+      model: 'Designation',
+    },
+    industry: {
+      model: 'Industry',
+    },
+    company: {
+      model: 'Company',
+    },
   },
 
   afterCreate: function(value, cb){

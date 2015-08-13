@@ -60,5 +60,8 @@ module.exports.routes = {
   'get /profile/:id/linkedin' : 'ProfileController.viewLinkedin',
 
   //handshake
-  'post /handshake/accept' : 'HandshakeController.acceptHandshake'
+  'post /handshake/accept' : 'HandshakeController.acceptHandshake',
+
+  //device
+  'post /device/initiateHandshake' : 'DeviceController.initiateHandshake'
 };

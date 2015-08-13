@@ -12,6 +12,7 @@ module.exports = {
 			var tagId = req.body.tagId;
 
 			console.log(1, deviceId, 2, tagId);
+			return res.ok();
 		} else {
 			return res.badRequest();
 		}

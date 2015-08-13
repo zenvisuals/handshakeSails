@@ -92,7 +92,7 @@ module.exports = {
 				return num != id;
 			}).value();
 
-			return [Profile.find({user: receiverIds}),Profile.find({user: initiatorIds})];
+			return [Profile.find({user: receiverIds}).populateAll(),Profile.find({user: initiatorIds}).populateAll()];
 		})
   }
 }
