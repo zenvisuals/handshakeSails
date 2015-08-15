@@ -6,6 +6,10 @@
  */
 
 module.exports = {
-	
+	find: function(req, res) {
+		var query = req.query.company ? Designation.find({title:{'startsWith': req.query.company}}) : Designation.find();
+		query.then(function(results){
+			return res.json(_.pluck(results, 'title'));
+		})
+	}
 };
-
