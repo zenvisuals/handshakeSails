@@ -29,18 +29,15 @@
     <!--STYLES-->
 
     <link rel="stylesheet" href="/styles/bootstrap.min.css">
-    <link rel="stylesheet" href="/styles/animate.css">
-    <link rel="stylesheet" href="/styles/font-awesome.min.css">
-    <link rel="stylesheet" href="/styles/slick.css">
-    <link rel="stylesheet" href="/js/rs-plugin/css/settings.css">
-    <link rel="stylesheet" href="/styles/eco.css">
-    <link rel="stylesheet" href="/styles/importer.css">
     <link rel="stylesheet" href="/styles/signin.css">
+    <link rel="stylesheet" href="/styles/jquery-ui.min.css">
+    <link rel="stylesheet" href="/styles/jquery-ui.structure.min.css">
 
     <!--STYLES END-->
     <link href="styles/full-width-pics.css" rel="stylesheet">
     <script src="/js/dependencies/_jquery.js"></script>
-    <script src="/js/modernizr.custom.32033.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/underscore-min.js"></script>
   </head>
 
   <body>
@@ -70,6 +67,11 @@
         <li><a href="/logout">Logout</a></li>
       </ul>
       <% } else { %>
+        <form class="navbar-form navbar-right" role="search">
+        <div class="form-group ui-widget">
+          <input id="tags" type="text" class="form-control" placeholder="Companies, Designations or Industries">
+        </div>
+      </form>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="/login">Sign in</a></li>
           <li><a href="/register">Register</a></li>
@@ -132,13 +134,101 @@
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
     <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/slick.min.js"></script>
-    <script src="/js/placeholdem.min.js"></script>
-    <script src="/js/rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
-    <script src="/js/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
-    <script src="/js/waypoints.min.js"></script>
-    <script src="/js/scripts.js"></script>
     <!--SCRIPTS END-->
+    <!--JQUERY AUTOCOMPLETE -->
+    <script>
+    //widget render custom
+    $.widget( "custom.catcomplete", $.ui.autocomplete, {
+      _create: function() {
+        this._super();
+        this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
+      },
+      _renderMenu: function( ul, items ) {
+        var that = this,
+          currentCategory = "";
+        $.each( items, function( index, item ) {
+          var li;
+          if ( item.category != currentCategory ) {
+            ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+            currentCategory = item.category;
+          }
+          li = that._renderItemData( ul, item );
+          if ( item.category ) {
+            li.attr( "aria-label", item.category + " : " + item.label );
+          }
+        });
+      }
+    });
+    $(function() {
+      function split( val ) {
+        return val.split( /,\s*/ );
+      }
+      function extractLast( term ) {
+        return split( term ).pop();
+      }
+
+      $( "#tags" )
+        // don't navigate away from the field on tab when selecting an item
+        .bind( "keydown", function( event ) {
+          if ( event.keyCode === $.ui.keyCode.TAB &&
+              $( this ).autocomplete( "instance" ).menu.active ) {
+            event.preventDefault();
+          }
+        })
+        .catcomplete({
+          source: function( request, response ) {
+            console.log(request);
+            var getCompanies = $.getJSON("./company", {company: request.term});
+            var getDesignations = $.getJSON("./designation", {designation: request.term});
+            var getIndustries = $.getJSON("./industry", {industry: request.term});
+            $.when(getCompanies, getDesignations, getIndustries).done(
+              function(companies, designations, industries){
+                var _companies, _designations, _industries;
+                if(companies[0]) {
+                  _companies = $.map(companies[0], function(label){
+                    return {label: label, category: "Companies"};
+                  });
+                }
+                if(designations[0]){
+                  _designations = $.map(designations[0], function(label){
+                    return {label: label, category: "Designations"};
+                  });
+                }
+                if(industries[0]) {
+                  _industries = $.map(industries[0], function(label){
+                    return {label: label, category: "Industries"};
+                  });
+                }
+
+                var alldata = _.union(_companies, _designations, _industries);
+                response(alldata);
+              })
+          },
+          search: function() {
+            // custom minLength
+            var term = extractLast( this.value );
+            if ( term.length < 2 ) {
+              return false;
+            }
+          },
+          focus: function() {
+            // prevent value inserted on focus
+            return false;
+          },
+          select: function( event, ui ) {
+            var terms = split( this.value );
+            // remove the current input
+            terms.pop();
+            // add the selected item
+            terms.push( ui.item.value );
+            // add placeholder to get the comma-and-space at the end
+            terms.push( "" );
+            this.value = terms.join( ", " );
+            return false;
+          }
+        });
+    });
+    </script>
 
 
   </body>
