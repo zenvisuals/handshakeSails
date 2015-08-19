@@ -9,7 +9,7 @@ module.exports = {
 	find: function(req, res) {
 		var query = req.query.designation ? Designation.find({title:{'startsWith': req.query.designation}}) : Designation.find();
 		query.then(function(results){
-			return res.json(_.pluck(results, 'title'));
+			return res.json(results);
 		})
 	}
 };

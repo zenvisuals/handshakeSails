@@ -50,10 +50,10 @@
             <% } %>
             <div class="caption">
               <h4><%= initiator.name %></h4>
-              <p><%= initiator.designation %></p>
-              <p><%= initiator.industry %></p>
-              <p><button type="button" class="btn btn-success btn-sm btn-block" id="acceptBtn" data-userid="<%= initiator.user %>">Accept</button></p>
-              <p><button type="button" class="btn btn-danger btn-sm btn-block" id="rejectBtn" data-userid="<%= initiator.user %>">
+              <p><%= initiator.designation.title %></p>
+              <p><%= initiator.industry.title %></p>
+              <p><button type="button" class="btn btn-success btn-sm btn-block" id="acceptBtn" data-userid="<%= initiator.user.id %>">Accept</button></p>
+              <p><button type="button" class="btn btn-danger btn-sm btn-block" id="rejectBtn" data-userid="<%= initiator.user.id %>">
                   Reject
                 </button>
               </p>
@@ -95,7 +95,6 @@ function acceptHandshake(obj) {
   var receiverId = currentUser;
   var initiatorId = btn.data('userid');
   var userName = btn.parent().siblings('h4').text();
-
   disableButton(btn, btnLoadText);
   $.ajax({
     url: '../handshake/accept',

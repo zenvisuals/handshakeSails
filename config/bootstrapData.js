@@ -4,7 +4,10 @@ module.exports = {
     {username: 'Zhi', email: 'zhi@zv.sg', password: 'pass1234'},
     {username: 'Qu', email: 'qu@zv.sg', password: 'pass1234'},
     {username: 'Lu', email: 'lu@zv.sg', password: 'pass1234'},
-    {username: 'Ah', email: 'ah@zv.sg', password: 'pass1234'}
+    {username: 'Ah', email: 'ah@zv.sg', password: 'pass1234'},
+    {username: 'Badoo', email: 'badoo@zv.sg', password: 'pass1234'},
+    {username: 'Booza', email: 'booza@zv.sg', password: 'pass1234'},
+    {username: 'Pro', email: 'pro@zv.sg', password: 'pass1234'}
   ],
   companies: [
     {title: 'Apple'},
@@ -64,6 +67,9 @@ module.exports = {
     {name: "Peter Marker", designation: 12, industry: 5, company: 14, user: 3},
     {name: "Michael Strongman", designation:1, industry: 5, company: 9, user: 4},
     {name: "Chen Li", designation: 4, industry: 8, company:13, user: 5},
+    {name: "Ben Shek", designation: 4, industry: 9, company:13, user: 6},
+    {name: "Paul Frank", designation: 7, industry: 5, company: 9, user: 7},
+    {name: "Pro Ka Kee", designation: 6, industry: 5, company: 2, user: 8},
   ],
   passports: [
     {protocol: 'local', password: 'pass1234', user: 1},
@@ -71,6 +77,9 @@ module.exports = {
     {protocol: 'local', password: 'pass1234', user: 3},
     {protocol: 'local', password: 'pass1234', user: 4},
     {protocol: 'local', password: 'pass1234', user: 5},
+    {protocol: 'local', password: 'pass1234', user: 6},
+    {protocol: 'local', password: 'pass1234', user: 7},
+    {protocol: 'local', password: 'pass1234', user: 8},
   ],
   devices: [
     {deviceId: "54ff70066667515122581267", tagId: "1792429212", user: 2},

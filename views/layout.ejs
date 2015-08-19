@@ -154,6 +154,7 @@
           }
           li = that._renderItemData( ul, item );
           if ( item.category ) {
+            li.attr("data-fid", item.id);
             li.attr( "aria-label", item.category + " : " + item.label );
           }
         });
@@ -185,22 +186,23 @@
               function(companies, designations, industries){
                 var _companies, _designations, _industries;
                 if(companies[0]) {
-                  _companies = $.map(companies[0], function(label){
-                    return {label: label, category: "Companies"};
+                  _companies = $.map(companies[0], function(company){
+                    return {label: company.title, category: "Company", id: company.id};
                   });
                 }
                 if(designations[0]){
-                  _designations = $.map(designations[0], function(label){
-                    return {label: label, category: "Designations"};
+                  _designations = $.map(designations[0], function(designation){
+                    return {label: designation.title, category: "Designation", id:designation.id};
                   });
                 }
                 if(industries[0]) {
-                  _industries = $.map(industries[0], function(label){
-                    return {label: label, category: "Industries"};
+                  _industries = $.map(industries[0], function(industry){
+                    return {label: industry.title, category: "Industry", id:industry.id};
                   });
                 }
 
                 var alldata = _.union(_companies, _designations, _industries);
+                console.log(alldata);
                 response(alldata);
               })
           },
@@ -216,14 +218,21 @@
             return false;
           },
           select: function( event, ui ) {
+            if(ui.item.category == "Company") {
+              window.location.replace("./search?company=" + ui.item.id);
+            } else if(ui.item.category == "Designation") {
+              window.location.replace("./search?designation=" + ui.item.id);
+            } else if(ui.item.category == "Industry") {
+              window.location.replace("./search?industry=" + ui.item.id);
+            }
+
             var terms = split( this.value );
             // remove the current input
             terms.pop();
             // add the selected item
             terms.push( ui.item.value );
-            // add placeholder to get the comma-and-space at the end
-            terms.push( "" );
-            this.value = terms.join( ", " );
+
+            this.value = terms;
             return false;
           }
         });

@@ -55,10 +55,9 @@
 }
 
 .ui-autocomplete {
-  position: absolute;
+  position: fixed;
   top: 100%;
   left: 0;
-  z-index: 1000;
   float: left;
   display: none;
   min-width: 160px;
@@ -97,4 +96,8 @@
   color: #4e4e4e;
   background-color: #eee;
   cursor:pointer;
+}
+
+.ui-helper-hidden-accessible {
+  display: none;
 }

@@ -10,7 +10,7 @@ module.exports = {
 	find: function(req, res) {
 		var query = req.query.company ? Company.find({title:{'startsWith': req.query.company}}) : Company.find();
 		query.then(function(results){
-			return res.json(_.pluck(results, 'title'));
+			return res.json(results);
 		})
 	}
 };

@@ -18,13 +18,37 @@ body {
 }
 
 .image-bg-fluid-height {
-	background: url('http://lorempixel.com/g/1920/500/') no-repeat center center scroll;
+    position: relative;
     padding: 100px 0;
 }
 
+.image-bg-fluid-height::after {
+  content: "";
+  background: url('http://lorempixel.com/g/1920/500/') no-repeat center center scroll;
+  opacity: 0.2;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
 .image-bg-fixed-height {
-	background: url('http://lorempixel.com/g/1920/500/') no-repeat center center scroll;
+    position: relative;
     height: 450px;
+}
+
+.image-bg-fluid-height::after {
+  content: "";
+  background: url('http://lorempixel.com/g/1920/500/') no-repeat center center scroll;
+  opacity: 0.2;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
 }
 
 .img-center {
