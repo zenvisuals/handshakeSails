@@ -65,6 +65,7 @@ passport.protocols = require('./protocols');
  * @param {Function} next
  */
 passport.connect = function (req, query, profile, next) {
+  console.log("i came", profile);
   var user = {}
     , provider;
 
@@ -78,6 +79,7 @@ passport.connect = function (req, query, profile, next) {
   // If the provider cannot be identified we cannot match it to a passport so
   // throw an error and let whoever's next in line take care of it.
   if (!provider){
+    console.log("no provider");
     return next(new Error('No authentication provider was identified.'));
   }
 
@@ -95,8 +97,10 @@ passport.connect = function (req, query, profile, next) {
   // have a way of identifying the user in the future. Throw an error and let
   // whoever's next in the line take care of it.
   if (!user.username && !user.email) {
+    console.log("no email no username");
     return next(new Error('Neither a username nor email was available'));
   }
+  console.log("retrieve passport");
   Passport.findOne({
     provider   : provider
   , identifier : query.identifier.toString()
@@ -106,6 +110,7 @@ passport.connect = function (req, query, profile, next) {
     }
 
     if (!req.user) {
+      console.log("new user");
       // Scenario: A new user is attempting to sign up using a third-party
       //           authentication provider.
       // Action:   Create a new user and assign them a passport.
@@ -127,32 +132,37 @@ passport.connect = function (req, query, profile, next) {
           query.user = user.id;
 
           Passport.create(query, function (err, passport) {
-            console.log(passpor);
+            console.log(passport);
             // If a passport wasn't created, bail out
             if (err) {
               console.log(1, err);
               return next(err);
             }
-            //Generate new profile with the linked account
-            request.get({url:linkedin.basicProfile + passport.tokens.accessToken,json:true}, function(e, r, data) {
-      				if(e) return next(e);
-      				if(r.statusCode >= 300) return next("Something went wrong");
-      				// Profile.create({
-              //
-              // })
-              var profileData = {
-                user: user.id,
-                name: data.formattedName,
-                designation: data.headline,
-                industry: data.industry,
-                description: data.summary
-              };
-              if(data.pictureUrls._total) profileData.pictureUrl = data.pictureUrls.values[0];
-              Profile.create(profileData).exec(function(err, profile) {
-                if(err) return next(err);
+
+            switch(passport.provider) {
+              case 'linkedin':
+                //Generate new profile with the linked account
+                request.get({url:linkedin.basicProfile + passport.tokens.accessToken,json:true}, function(e, r, data) {
+                  if(e) return next(e);
+                  if(r.statusCode >= 300) return next("Something went wrong");
+                  // Profile.create({
+                  //
+                  // })
+                  var profileData = {
+                    user: user.id,
+                    name: data.formattedName,
+                    description: data.summary
+                  };
+                  if(data.pictureUrls._total) profileData.pictureUrl = data.pictureUrls.values[0];
+                  Profile.create(profileData).exec(function(err, profile) {
+                    if(err) return next(err);
+                    next(err, user);
+                  })
+                })
+                break;
+              default:
                 next(err, user);
-              })
-      			})
+            }
           });
         });
       }
@@ -160,6 +170,7 @@ passport.connect = function (req, query, profile, next) {
       //           connected passport.
       // Action:   Get the user associated with the passport.
       else {
+        console.log("existing user");
         // If the tokens have changed since the last session, update them
         if (query.hasOwnProperty('tokens') && query.tokens !== passport.tokens) {
           passport.tokens = query.tokens;
@@ -176,6 +187,7 @@ passport.connect = function (req, query, profile, next) {
         });
       }
     } else {
+      console.log("logged on");
       // Scenario: A user is currently logged in and trying to connect a new
       //           passport.
       // Action:   Create and assign a new passport to the user.
@@ -195,6 +207,7 @@ passport.connect = function (req, query, profile, next) {
       // Scenario: The user is a nutjob or spammed the back-button.
       // Action:   Simply pass along the already established session.
       else {
+        console.log("other");
         next(null, req.user);
       }
     }

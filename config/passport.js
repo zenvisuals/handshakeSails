@@ -61,6 +61,7 @@ module.exports.passport = {
     options: {
       clientID: process.env.LINKEDIN_CLIENTID,
       clientSecret: process.env.LINKEDIN_CLIENTSECRET,
+      callbackURL: "http://localhost:1337/auth/linkedin/callback",
       scope: ['r_emailaddress', 'r_basicprofile'],
     },
   },
@@ -83,6 +84,17 @@ module.exports.passport = {
       ssoBaseURL: 'http://your-cas-url',
       serverBaseURL: 'http://localhost:1337',
       serviceURL: 'http://localhost:1337/auth/cas/callback'
+    }
+  },
+
+  meetup: {
+    name: 'Meetup',
+    protocol: 'oauth2',
+    strategy: require('passport-oauth2-meetup').Strategy,
+    options: {
+      clientID: process.env.MEETUP_CLIENTID,
+      clientSecret: process.env.MEETUP_CLIENTSECRET,
+      callbackURL: "http://localhost:1337/auth/meetup/callback"
     }
   }
 };
