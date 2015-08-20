@@ -127,6 +127,7 @@ passport.connect = function (req, query, profile, next) {
           query.user = user.id;
 
           Passport.create(query, function (err, passport) {
+            console.log(passpor);
             // If a passport wasn't created, bail out
             if (err) {
               console.log(1, err);
