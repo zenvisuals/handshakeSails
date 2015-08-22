@@ -59,7 +59,11 @@ module.exports = {
     },
     //override toJSON
     toJSON: function() {
-      return {};
+      var obj = this.toObject();
+      return {
+        provider: obj.provider,
+        identifier: obj.identifier
+      };
     }
   },
 

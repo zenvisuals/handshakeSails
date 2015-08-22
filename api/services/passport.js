@@ -65,7 +65,6 @@ passport.protocols = require('./protocols');
  * @param {Function} next
  */
 passport.connect = function (req, query, profile, next) {
-  console.log("i came", profile);
   var user = {}
     , provider;
 
@@ -97,10 +96,9 @@ passport.connect = function (req, query, profile, next) {
   // have a way of identifying the user in the future. Throw an error and let
   // whoever's next in the line take care of it.
   if (!user.username && !user.email) {
-    console.log("no email no username");
-    return next(new Error('Neither a username nor email was available'));
+    //meetup does not provide email and username, however user should be logged on to link his meetup account
+    if(!req.user || provider != 'meetup') return next(new Error('Neither a username nor email was available'));
   }
-  console.log("retrieve passport");
   Passport.findOne({
     provider   : provider
   , identifier : query.identifier.toString()
@@ -110,7 +108,6 @@ passport.connect = function (req, query, profile, next) {
     }
 
     if (!req.user) {
-      console.log("new user");
       // Scenario: A new user is attempting to sign up using a third-party
       //           authentication provider.
       // Action:   Create a new user and assign them a passport.
@@ -132,7 +129,6 @@ passport.connect = function (req, query, profile, next) {
           query.user = user.id;
 
           Passport.create(query, function (err, passport) {
-            console.log(passport);
             // If a passport wasn't created, bail out
             if (err) {
               console.log(1, err);
@@ -170,7 +166,6 @@ passport.connect = function (req, query, profile, next) {
       //           connected passport.
       // Action:   Get the user associated with the passport.
       else {
-        console.log("existing user");
         // If the tokens have changed since the last session, update them
         if (query.hasOwnProperty('tokens') && query.tokens !== passport.tokens) {
           passport.tokens = query.tokens;
@@ -187,7 +182,6 @@ passport.connect = function (req, query, profile, next) {
         });
       }
     } else {
-      console.log("logged on");
       // Scenario: A user is currently logged in and trying to connect a new
       //           passport.
       // Action:   Create and assign a new passport to the user.
@@ -207,7 +201,6 @@ passport.connect = function (req, query, profile, next) {
       // Scenario: The user is a nutjob or spammed the back-button.
       // Action:   Simply pass along the already established session.
       else {
-        console.log("other");
         next(null, req.user);
       }
     }

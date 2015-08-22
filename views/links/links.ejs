@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="page-header">
+    <h1>Linked Accounts</h1>
+  </div>
+  <p class="lead">You may link up your event accounts for this application to access them and provide a more comprehensive search on the event attendees.</p>
+  <p>Click on the buttons below to link the accounts</p>
+  <% var unlinked = ["linkedin","meetup","eventbrite"]; %>
+  <% var linked = [] %>
+
+  <% links.forEach(function(link) { %>
+    <% var linkIndex = unlinked.indexOf(link.provider); %>
+    <% if(linkIndex >= 0) { %>
+      <% linked.push(link.provider); %>
+      <% unlinked.splice(linkIndex, 1); %>
+    <% } %>
+  <% }) %>
+
+  <% linked.forEach(function(link) { %>
+    <button class="btn btn-success">
+      <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+      <%= link.charAt(0).toUpperCase() + link.slice(1) %>
+    </button>
+  <% }) %>
+  <% unlinked.forEach(function(link) { %>
+    <a class="btn btn-default" href="./auth/<%= link %>" role="button">
+      <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+      <%= link.charAt(0).toUpperCase() + link.slice(1) %>
+    </a>
+  <% }) %>
+
+
+</div>

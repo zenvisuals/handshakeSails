@@ -101,3 +101,7 @@
 .ui-helper-hidden-accessible {
   display: none;
 }
+
+body > .container {
+  padding-top: 60px;
+}

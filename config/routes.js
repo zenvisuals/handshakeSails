@@ -66,5 +66,8 @@ module.exports.routes = {
   'post /device/initiateHandshake' : 'DeviceController.initiateHandshake',
 
   //search
-  'get /search' : 'SearchController.search'
+  'get /search' : 'SearchController.search',
+
+  //linked account
+  'get /links' : 'LinkController.links'
 };

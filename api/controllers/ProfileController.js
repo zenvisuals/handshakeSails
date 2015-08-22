@@ -9,6 +9,7 @@ var request = require('request');
 
 module.exports = {
 	viewLinkedin: function(req, res) {
+		console.log(req.passport);
 		var id = req.param('id');
 		var provider = 'linkedin';
 		Passport.findOne({provider: provider, user: id})

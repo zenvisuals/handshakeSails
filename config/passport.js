@@ -94,7 +94,8 @@ module.exports.passport = {
     options: {
       clientID: process.env.MEETUP_CLIENTID,
       clientSecret: process.env.MEETUP_CLIENTSECRET,
-      callbackURL: "http://localhost:1337/auth/meetup/callback"
+      callbackURL: "http://localhost:1337/auth/meetup/callback",
+      autoGenerateUsername: false
     }
   }
 };
