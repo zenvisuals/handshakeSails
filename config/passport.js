@@ -61,7 +61,7 @@ module.exports.passport = {
     options: {
       clientID: process.env.LINKEDIN_CLIENTID,
       clientSecret: process.env.LINKEDIN_CLIENTSECRET,
-      callbackURL: "http://localhost:1337/auth/linkedin/callback",
+      callbackURL: "https://sonder-sails.herokuapp.com/auth/linkedin/callback",
       scope: ['r_emailaddress', 'r_basicprofile'],
     },
   },
@@ -94,7 +94,7 @@ module.exports.passport = {
     options: {
       clientID: process.env.MEETUP_CLIENTID,
       clientSecret: process.env.MEETUP_CLIENTSECRET,
-      callbackURL: "http://localhost:1337/auth/meetup/callback",
+      callbackURL: "https://sonder-sails.herokuapp.com/auth/meetup/callback",
       autoGenerateUsername: false
     }
   }
