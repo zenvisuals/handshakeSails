@@ -69,5 +69,9 @@ module.exports.routes = {
   'get /search' : 'SearchController.search',
 
   //linked account
-  'get /links' : 'LinkController.links'
+  'get /links' : 'LinkController.links',
+
+  //events
+  'get /events' : 'EventController.events',
+  'get /events/:platform/:id' : 'EventController.attendees'
 };

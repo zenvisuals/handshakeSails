@@ -16,8 +16,8 @@ module.exports = {
 		.then(function(passport) {
 			if(!passport) throw new Error('No passport found');
 			request.get({url:linkedin.basicProfile + passport.tokens.accessToken,json:true}, function(e, r, data) {
-				if(e) throw new Error(e);
-				if(r.statusCode >= 300) throw new Error("Something went wrong");
+				if(e) return res.badRequest(e);
+				if(r.statusCode >= 300) return res.badRequest("Something went wrong");
 				return res.view('profile/viewLinkedin', {"profile":data});
 			})
 		}).catch(function(e) {

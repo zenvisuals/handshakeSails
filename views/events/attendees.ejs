@@ -1,0 +1,32 @@
+<div class="container">
+  <h1>Attendees</h1>
+    <div id="flashMessages">
+    </div>
+
+    <% if(attendees.length) { %>
+      <div class="row" id="attendees">
+        <% attendees.forEach(function(attendee) { %>
+          <div class="col-xs-6 col-sm-3">
+          <div class="well well-lg textcenter">
+            <% if(attendee.photoUrl) { %>
+              <img class="img-responsive marginauto img-circle imageClip" src="<%= attendee.photoUrl %>" alt="">
+            <% } else { %>
+              <img class="img-responsive marginauto img-circle" src="http://lorempixel.com/200/200/abstract" alt="">
+            <% } %>
+
+            <div class="caption">
+              <h4><%= attendee.name %></h4>
+              <p>Brought <strong><%= attendee.guests %></strong> guests</p>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+    </div>
+    <% } else { %>
+      <div class="alert alert-info" id="noattendees">
+        There are no attendees for this event. Weird.
+      </div>
+    <% } %>
+
+  </div>
+</div>

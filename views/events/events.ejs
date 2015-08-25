@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="page-header">
+    <h1>Events</h1>
+  </div>
+  <p class="lead">This page holds the list of events you have attended, be it from Meetup or Eventbrite, it is all consolidated here.</p>
+  <% if(events.length) { %>
+  <div class="row" id="events">
+    <% events.forEach(function(event){ %>
+      <div class="col-xs-6">
+        <div class="well well-lg textcenter">
+        <div class="caption">
+          <h4><a href="<%= event.url %>"><%= event.name %></a></h4>
+          <hr />
+          <p><span style="font-size: 1.5em" class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></p>
+          <p><%= event.venue.address_1 %></p>
+          <p><span style="font-size: 1.5em" class="glyphicon glyphicon-calendar" aria-hidden="true"></p>
+          <p><%= event.time %></p>
+          <p><a role="button" class="btn btn-success btn-sm btn-block" href="/events/<%= event.platform %>/<%= event.id %>">View attendees</a></p>
+        </div>
+      </div>
+      </div>
+    <% }) %>
+    </div>
+  <% } else { %>
+  <div class="alert alert-info" id="noevents">
+    You have not attended any events so far.
+  </div>
+  <% } %>
+
+</div>
